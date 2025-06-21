@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focus+Productivity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0f0f0f;
+      --text-color: #fff;
+      --accent: #00ff88;
+      --grid-line: rgba(255,255,255,0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-image:
+        linear-gradient(0deg, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 40px 40px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 70%);
+      z-index: 0;
+    }
+
+    header {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      z-index: 2;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    main {
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px var(--accent);
+    }
+
+    p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
+      opacity: 0.85;
+    }
+
+    .cta-button {
+      margin-top: 2rem;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--bg-color);
+      background-color: var(--accent);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--accent);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.5;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .signature {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2rem;
+      color: var(--accent);
+      z-index: 2;
+      opacity: 0.8;
+    }
+
+    .social-media {
+      position: absolute;
+      bottom: 20px;
+      left: 30px;
+      z-index: 2;
+    }
+
+    .social-media img {
+      width: 32px;
+      height: 32px;
+      filter: brightness(0) saturate(100%) invert(78%) sepia(90%) saturate(212%) hue-rotate(85deg) brightness(96%) contrast(97%);
+      transition: transform 0.3s ease;
+    }
+
+    .social-media img:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <header>Foccus.</header>
+  <main>
+    <h1>Focus+Productivity</h1>
+    <p>Unlock the true potential of your time and energy. This space is built to eliminate distractions and power your goals. Crafted for the driven, designed for results.</p>
+    <a class="cta-button" href="https://youtube.com/@neetology.live-2026?si=EXsUyXQqgOsORP2b" target="_blank">Begin Your Journey</a>
+  </main>
+  <footer>
+    &copy; 2025 Foccus. Built with precision and intention.
+  </footer>
+  <div class="signature">Made by Rahul Singh</div>
+  <div class="social-media">
+    <a href="https://youtube.com/@neetology.live-2026?si=EXsUyXQqgOsORP2b" target="_blank" title="Visit our YouTube">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube">
+    </a>
+  </div>
+</body>
+</html>
