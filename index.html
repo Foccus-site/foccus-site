@@ -1,163 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Focus+Productivity</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #0f0f0f;
-      --text-color: #fff;
-      --accent: #00ff88;
-      --grid-line: rgba(255,255,255,0.05);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foccus.</title>
+    <!-- Google Fonts for Inter and Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Tailwind configuration for Inter and Playfair Display fonts */
+        :root {
+          --font-inter: 'Inter', sans-serif;
+          --font-playfair: 'Playfair Display', serif;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        body {
+            font-family: var(--font-inter);
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    body {
-      font-family: 'Rubik', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background-image:
-        linear-gradient(0deg, var(--grid-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-      background-size: 40px 40px;
-      overflow: hidden;
-      position: relative;
-    }
+        /* Custom Keyframe Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes textReveal1 {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes textReveal2 {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        @keyframes fadeInUpStaggered {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-    body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 70%);
-      z-index: 0;
-    }
+        /* Animation classes */
+        .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
+        .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+        .animate-fade-in-delay-1000 { animation: fadeIn 1s ease-out forwards 1s; }
+        .animate-fade-in-delay-1500 { animation: fadeIn 1s ease-out forwards 1.5s; }
+        .animate-text-reveal-1 { animation: textReveal1 1.2s ease-out forwards; }
+        .animate-text-reveal-2 { animation: textReveal2 1.2s ease-out forwards 0.3s; }
+        .animate-blob { animation: blob 7s infinite cubic-bezier(0.68, -0.25, 0.26, 0.85); }
+        .animated-grid {
+            background-image: linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
+        }
 
-    header {
-      position: absolute;
-      top: 30px;
-      left: 40px;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-      z-index: 2;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+        /* Specific animation delays for blobs */
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
 
-    main {
-      z-index: 2;
-      text-align: center;
-      padding: 20px;
-      animation: fadeIn 1.5s ease-out;
-    }
+        /* Class for on-scroll animation (initially hidden) */
+        .feature-card {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            /* Fallback animation if JS fails or for initial state */
+            animation: none; /* Will be overridden by JS adding animate-fade-in-up-staggered */
+        }
+        .feature-card.animate-fade-in-up-staggered {
+             animation: fadeInUpStaggered 0.8s ease-out forwards;
+        }
 
-    h1 {
-      font-size: 4rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 15px var(--accent);
-    }
+        /* Playfair Display font specific class */
+        .font-playfair {
+            font-family: var(--font-playfair);
+        }
 
-    p {
-      font-size: 1.3rem;
-      line-height: 1.6;
-      max-width: 600px;
-      margin: 0 auto;
-      opacity: 0.85;
-    }
-
-    .cta-button {
-      margin-top: 2rem;
-      padding: 0.75rem 2rem;
-      font-size: 1rem;
-      font-weight: bold;
-      color: var(--bg-color);
-      background-color: var(--accent);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .cta-button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px var(--accent);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    footer {
-      position: absolute;
-      bottom: 20px;
-      text-align: center;
-      font-size: 0.9rem;
-      opacity: 0.5;
-      z-index: 2;
-      width: 100%;
-    }
-
-    .signature {
-      position: absolute;
-      bottom: 20px;
-      right: 30px;
-      font-family: 'Great Vibes', cursive;
-      font-size: 1.2rem;
-      color: var(--accent);
-      z-index: 2;
-      opacity: 0.8;
-    }
-
-    .social-media {
-      position: absolute;
-      bottom: 20px;
-      left: 30px;
-      z-index: 2;
-    }
-
-    .social-media img {
-      width: 32px;
-      height: 32px;
-      filter: brightness(0) saturate(100%) invert(78%) sepia(90%) saturate(212%) hue-rotate(85deg) brightness(96%) contrast(97%);
-      transition: transform 0.3s ease;
-    }
-
-    .social-media img:hover {
-      transform: scale(1.1);
-    }
-  </style>
+        /* Image Ambient/Raised Look */
+        .ambient-image {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.05); /* Soft shadow for depth, subtle inner glow */
+            filter: brightness(0.9) contrast(1.1) grayscale(0.1); /* Subtle adjustments for ambient feel */
+            border: none; /* Removing previous border */
+        }
+    </style>
 </head>
-<body>
-  <header>Foccus.</header>
-  <main>
-    <h1>Focus+Productivity</h1>
-    <p>Unlock the true potential of your time and energy. This space is built to eliminate distractions and power your goals. Crafted for the driven, designed for results.</p>
-    <a class="cta-button" href="https://youtube.com/@neetology.live-2026?si=EXsUyXQqgOsORP2b" target="_blank">Begin Your Journey</a>
-  </main>
-  <footer>
-    &copy; 2025 Foccus. Built with precision and intention.
-  </footer>
-  <div class="signature">Made by Rahul Singh</div>
-  <div class="social-media">
-    <a href="https://youtube.com/@neetology.live-2026?si=EXsUyXQqgOsORP2b" target="_blank" title="Visit our YouTube">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube">
-    </a>
-  </div>
+<body class="font-inter bg-black text-white min-h-screen antialiased">
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" id="logo" class="text-3xl font-extrabold tracking-tight text-white hover:text-gray-300 transition-colors duration-200 rounded-lg p-2">
+                Foccus.
+            </a>
+            <div class="flex space-x-8">
+                <a href="#" class="text-lg font-medium text-white hover:text-gray-300 transition-colors duration-200 relative group" onclick="navigateTo('home'); return false;">
+                    Home
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#" class="text-lg font-medium text-white hover:text-gray-300 transition-colors duration-300 relative group" onclick="navigateTo('features'); return false;">
+                    Features
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#" class="text-lg font-medium text-white hover:text-gray-300 transition-colors duration-200 relative group" onclick="navigateTo('about'); return false;">
+                    About
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="#" class="text-lg font-medium text-white hover:text-gray-300 transition-colors duration-200 relative group" onclick="navigateTo('contact'); return false;">
+                    Contact
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"></span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area - Will hold Home or About Page -->
+    <main id="main-content">
+        <!-- Content will be injected here by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-8 text-center text-gray-500 text-sm">
+        <p>&copy; <span id="current-year"></span> Foccus.. All rights reserved.</p>
+        <p class="mt-2">Designed for concentration.</p>
+    </footer>
+
+    <script>
+        // Lucide Icon SVG definitions (simplified for direct use)
+        const lucideIcons = {
+            compass: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-white"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
+            trendingUp: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-white"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+            leaf: `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 text-white"><path d="M11 20A7 7 0 0 1 9.86 6.76C4.65 6.53 2 11.23 2 13a4 4 0 0 0 4 4c1.73 0 5.02-2.14 6-3 1.25-1.03 2.15-2.17 2.88-3.46 3.34 1.56 5.82 5.67 5.19 9.38-1.5 9.08-13.21 16.14-21.5 16.5-1.9.09-3.2-.33-3.2-1.07V22l-1.5-1.5L2 19"/></svg>`,
+        };
+
+        // Function to render Lucide Icons
+        function getLucideIcon(name) {
+            return lucideIcons[name] || '';
+        }
+
+        // Home Page Content
+        const homePageContent = `
+            <section class="relative h-screen flex items-center justify-center text-center p-6 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-950 opacity-90 z-0"></div>
+                <div class="absolute inset-0 z-0 opacity-10 animated-grid"></div>
+                <div class="absolute w-96 h-96 bg-gray-700 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob top-1/4 left-1/4"></div>
+                <div class="absolute w-96 h-96 bg-gray-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000 bottom-1/4 right-1/4"></div>
+                <div class="absolute w-96 h-96 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000 top-1/2 left-1/3"></div>
+
+                <div class="relative z-10 max-w-4xl mx-auto px-4">
+                    <h1 class="text-7xl md:text-8xl lg:text-9xl font-extrabold leading-tight mb-8">
+                        <span class="bg-gradient-to-r from-gray-200 to-white text-transparent bg-clip-text inline-block animate-text-reveal-1">Foccus.</span>
+                        <span class="bg-gradient-to-r from-gray-200 to-white text-transparent bg-clip-text inline-block animate-text-reveal-2">YOUR VISION</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-12 text-gray-300 max-w-2xl mx-auto animate-fade-in-delay-1000">
+                        No Excuses. Just Progress.
+                    </p>
+                    <button class="px-10 py-4 bg-white text-black text-xl font-bold rounded-full shadow-lg hover:shadow-2xl hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 animate-fade-in-delay-1500 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50"
+                        onclick="navigateTo('contact'); return false;">
+                        Start Focusing
+                    </button>
+                </div>
+            </section>
+
+            <section class="py-20 bg-gray-950 text-center">
+                <h2 class="text-5xl font-bold mb-4 animate-fade-in">Unleash Your Potential</h2>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto px-6 mb-12 animate-fade-in">
+                    "Foccus." is designed to cut through the noise, providing a clean and intuitive environment where your ideas can flourish without distraction.
+                </p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6" id="feature-cards">
+                    <div class="bg-gray-900 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 feature-card">
+                        ${getLucideIcon('compass')}
+                        <h3 class="text-3xl font-semibold mb-4 text-white">Clarity</h3>
+                        <p class="text-gray-300">Organize your thoughts with precision and purpose, bringing crystal-clear vision to your projects.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 feature-card">
+                        ${getLucideIcon('trendingUp')}
+                        <h3 class="text-3xl font-semibold mb-4 text-white">Productivity</h3>
+                        <p class="text-gray-300">Boost your output with tools designed to keep you on track and minimize interruptions.</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300 transform hover:-translate-y-1 feature-card">
+                        ${getLucideIcon('leaf')}
+                        <h3 class="text-3xl font-semibold mb-4 text-white">Simplicity</h3>
+                        <p class="text-gray-300">Experience a distraction-free interface that lets you concentrate on what truly matters.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- New Section: Image with Ambient Look -->
+            <section class="py-20 bg-black text-center animate-fade-in">
+                <div class="max-w-4xl mx-auto px-6">
+                    <!-- Image with ambient look styling -->
+                    <img src="https://i.postimg.cc/XJGGTs04/Youre-studying-like-a-stoic-while-everyone-else-is-sleeping-2-hours-.webp" alt="Minimalist black and white abstract art representing focus" class="rounded-lg w-full h-auto object-cover transform hover:scale-102 transition-transform duration-300 ease-in-out ambient-image">
+                    <!-- Removed Visual Showcase text -->
+                </div>
+            </section>
+            <!-- Created by section at the bottom of the home page -->
+            <section class="py-10 bg-gray-900 text-center animate-fade-in">
+                <p class="text-xl font-playfair text-gray-400">Created by <span class="text-white font-extrabold">@Rahul Singh</span></p>
+            </section>
+        `;
+
+        // About Page Content
+        const aboutPageContent = `
+            <section class="min-h-screen py-20 flex items-center justify-center bg-gray-950 text-white p-6">
+                <div class="max-w-4xl mx-auto text-center animate-fade-in">
+                    <h1 class="text-6xl md:text-7xl font-extrabold leading-tight mb-8">
+                        <span class="bg-gradient-to-r from-gray-200 to-white text-transparent bg-clip-text">About Foccus.</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-6 text-gray-300 leading-relaxed">
+                        Foccus. is not just a name — it’s a mindset.
+                    </p>
+                    <p class="text-lg md:text-xl mb-6 text-gray-400 leading-relaxed">
+                        Built for those who are tired of distractions and excuses, Foccus. exists to make every day count. In a world where discipline is rare, this space is for people who choose to show up, stay committed, and fight for progress — every single day.
+                    </p>
+                    <p class="text-lg md:text-xl mb-6 text-gray-400 leading-relaxed">
+                        Whether you're a student, a dreamer, or a doer — here, we believe in:
+                    </p>
+                    <ul class="list-disc list-inside text-left text-lg md:text-xl text-gray-300 space-y-2 mb-8 max-w-xl mx-auto">
+                        <li>Showing up when it’s hard.</li>
+                        <li>Staying focused when it’s boring.</li>
+                        <li>Building discipline when no one’s watching.</li>
+                    </ul>
+                    <p class="text-xl md:text-2xl font-semibold mb-6 text-white leading-relaxed">
+                        Foccus. is a challenge — to yourself.
+                    </p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-white leading-relaxed font-playfair">
+                        To get sharper. To work harder. To be better.
+                    </p>
+                    <p class="text-xl md:text-2xl mt-6 text-gray-200 leading-relaxed">
+                        Let’s make every day productive. No shortcuts. No compromises. Just pure focus.
+                    </p>
+                </div>
+            </section>
+        `;
+
+        // Function to navigate between pages
+        function navigateTo(page) {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = ''; // Clear current content
+
+            switch (page) {
+                case 'home':
+                    mainContent.innerHTML = homePageContent;
+                    initFeatureCardObserver(); // Re-initialize observer for home page features
+                    break;
+                case 'about':
+                    mainContent.innerHTML = aboutPageContent;
+                    break;
+                // Add cases for 'features', 'contact', etc. here
+                default:
+                    mainContent.innerHTML = homePageContent;
+                    initFeatureCardObserver();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top on page change
+        }
+
+        // Intersection Observer for feature cards
+        let featureObserver; // Declare outside to allow disconnect
+
+        function initFeatureCardObserver() {
+            const featureCards = document.querySelectorAll('.feature-card');
+            if (featureCards.length === 0) return;
+
+            // Disconnect previous observer if exists
+            if (featureObserver) {
+                featureObserver.disconnect();
+            }
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2, // Trigger when 20% of the item is visible
+            };
+
+            featureObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in-up-staggered');
+                        featureObserver.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, observerOptions);
+
+            featureCards.forEach(card => {
+                featureObserver.observe(card);
+            });
+        }
+
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-black/90', 'shadow-lg');
+            } else {
+                header.classList.remove('bg-black/90', 'shadow-lg');
+            }
+        });
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Initial page load
+        document.addEventListener('DOMContentLoaded', () => {
+            navigateTo('home'); // Load the home page by default
+        });
+    </script>
 </body>
 </html>
